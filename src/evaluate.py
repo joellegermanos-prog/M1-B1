@@ -30,16 +30,19 @@ def evaluate(model_path: Path, data_path: Path) -> dict:
     pipeline = joblib.load(model_path)
     X_holdout, y_holdout = load_dataset(data_path)
 
+    y_holdout = y_holdout.map({0: "Fully Paid", 1: "Charged Off"})
+
     y_pred = pipeline.predict(X_holdout)
     y_proba = pipeline.predict_proba(X_holdout)[:, 1]
 
     return {
         "f1_macro": round(f1_score(y_holdout, y_pred, average="macro"), 4),
-        "f1_default": round(f1_score(y_holdout, y_pred, pos_label=1), 4),
+        "f1_default": round(f1_score(y_holdout, y_pred, pos_label="Charged Off"), 4),
         "roc_auc": round(roc_auc_score(y_holdout, y_proba), 4),
         "confusion_matrix": confusion_matrix(y_holdout, y_pred).tolist(),
         "classification_report": classification_report(
-            y_holdout, y_pred, target_names=["Remboursé", "Défaut"], output_dict=True
+            y_holdout, y_pred, output_dict=True
+            #y_holdout, y_pred, target_names=["Remboursé", "Défaut"], output_dict=True
         ),
     }
 

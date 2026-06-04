@@ -34,16 +34,18 @@ Si ces 4 commandes marchent, ton poste est prêt.
 ```
 M1-B1-scoring-<prenom>/
 ├── data/
-│   ├── lending_club_train.csv           # à télécharger (cf. ci-dessous)
-│   └── lending_club_holdout.csv         # à télécharger
+│   ├── lending_club_train.csv           # Dataset d'entraînement
+│   └── lending_club_holdout.csv         # Échantillon secret Holdout
 ├── notebooks/
-│   └── M1-B1_template.ipynb             # à dupliquer en M1-B1_<prenom>_scoring.ipynb
+│   └── M1-B1_joelle_scoring.ipynb       # R&D, EDA et Mission Étoile SHAP
 ├── src/
 │   ├── preprocess.py                    # transformations reproductibles
 │   ├── train.py                         # script d'entraînement
 │   └── evaluate.py                      # métriques sur holdout
 ├── models/                              # .joblib + .json produits ici
 │   └── .gitkeep
+│   ├── pyrenex_risk_v2.joblib           # Pipeline complet figé (compress=3)
+│   └── pyrenex_risk_v2.json             # Métadonnées strictes de traçabilité
 ├── ressources/                          # 📚 mini-cours d'appui (lecture juste-à-temps)
 │   ├── 01_Pandas_Sklearn_split_essentiel.md
 │   ├── 02_Metrics_classif_desequilibree_essentiel.md
@@ -52,12 +54,12 @@ M1-B1-scoring-<prenom>/
 │   ├── 05_Persistance_modele_joblib_essentiel.md
 │   ├── liens_officiels.md
 │   └── README.md                        # ordre de mobilisation + objectifs
-├── contract_test.py                     # à compléter — valide shapes/classes/probas du .joblib
-├── experiments.md                       # à compléter run par run
-├── verdict.md                           # à rédiger en fin de journée
+├── contract_test.py                     # Validation de schéma + stabilité bit-à-bit [OK]
+├── experiments.md                       # Journal de bord complété run par run
+├── verdict.md                           # Rapport d'octroi final destiné à Sophie Léger
 ├── requirements.txt
 ├── .gitignore
-└── README.md (ce fichier — à compléter)
+└── README.md (ce fichier)
 ```
 
 ---
@@ -114,7 +116,19 @@ la formatrice mardi 9h. Place les 2 fichiers dans `data/` :
 Mini-cours d'appui : voir [`./ressources/`](./ressources/).
 
 ---
+## Métriques clés retenues (Verdict Holdout)
+Conformément à la règle d'or de la Data Science, l'évaluation finale a été calculée sur l'échantillon lending_club_holdout.csv, resté totalement vierge et isolé durant toute la phase d'expérimentation.
 
+Métrique | Baseline Historique (2017) | Modèle Retenu (v2.0.0 - Balanced) |  Statut vs Baseline
+F1-Score Macro | 0.5018 |  0.4926  | 🔴 Régression
+ROC-AUC  |  0.7296  | 0.7177  | 🔴 Régression légère
+Recall (Classe Risque) | 0.0500 |  0.0500  | ⚪ Stagnation critique
+
+---
+## Décision et Rapport
+👉 Consulter le rapport d'évaluation : verdict.md
+
+---
 ## ✅ Conventions de code
 
 - Python 3.11+

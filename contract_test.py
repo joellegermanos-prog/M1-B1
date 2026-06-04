@@ -69,7 +69,7 @@ if __name__ == "__main__":
     # ⚠️ Le `.drop(columns=["loan_status"])` est essentiel : le pipeline
     #    attend les features uniquement, pas la cible.
 
-    expected_first_proba: list[float] | None = None  # TODO — colle ici les 2 floats du print
+    expected_first_proba: list[float] | None = [0.06, 0.94]  # TODO — colle ici les 2 floats du print
 
     if expected_first_proba is None:
         raise NotImplementedError(
@@ -84,6 +84,7 @@ if __name__ == "__main__":
     contract_test_model(
         MODEL_PATH,
         x_sample=x_holdout,
-        expected_classes={0, 1},
+        #expected_classes={0, 1},
+        expected_classes={'Charged Off', 'Fully Paid'},
         expected_first_proba=expected_first_proba,
     )
